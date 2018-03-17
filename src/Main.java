@@ -186,4 +186,31 @@ public class Main extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    // This method search string in text
+    private void stringSearch() {
+        String searchString;
+        QueryDialog query;
+        int index;
+
+        // Open dialog for enter searching string
+        query = new QueryDialog(this, "Найти");
+        query.setLocation(150, 150);
+        query.pack();
+        query.setVisible(true);
+
+        searchString = query.getString();
+
+        if (searchString == null) return;
+
+        // Теперь ищем
+        String text = textArea.getText();
+        index = text.indexOf(searchString);
+
+        if(index == -1) {
+            JOptionPane.showMessageDialog(null, "Текст не найден", "Message", JOptionPane.INFORMATION_MESSAGE);
+        } else
+            // Подсветка строки
+            textArea.select(index, index + searchString.length());
+    }
 }
