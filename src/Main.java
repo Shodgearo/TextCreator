@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.print.PrinterException;
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.Hashtable;
 
 public class Main extends JFrame {
@@ -156,9 +158,15 @@ public class Main extends JFrame {
         initFrame();
     }
 
+    // Печать текста
     private void printFile() {
-        // Метод врятли будет реализован так что я просто оставлю здесь сообщение
-        JOptionPane.showMessageDialog(null, "Функция находится на стадии разработки.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        if(dataName == null) dataName = "Без имени";
+
+        try {
+            textArea.print(new MessageFormat(dataName), new MessageFormat("Страница {0}"), true, null, null, false);
+        } catch (PrinterException e) {
+            System.err.println(" Печать невозможна. \n");
+        }
     }
 
     private void dateLaden() {
