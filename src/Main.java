@@ -26,10 +26,14 @@ public class Main extends JFrame {
     }
 
     public Main () {
+        // For get all fonts in this system
+        GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        String[] arr = g.getAvailableFontFamilyNames();
+
         textArea = new JTextArea(COLS, ROWS); // Создать поле, где мы будем редактировать текст
         textArea.setEditable(true);
         JScrollPane scroll = new JScrollPane(textArea); // Создать прокручиваемый компонент текста
-        fonts = new JComboBox<String>();
+        fonts = new JComboBox<String>(arr);
         styles = new JComboBox<String>();
         colors = new JComboBox<String>();
         JPanel panel = new JPanel();        // Внутренняя панель для размещения списков
@@ -55,22 +59,17 @@ public class Main extends JFrame {
 
                 label = e.getActionCommand();
 
-                if(label.equals("Открыть")) dateLaden();
+                if (label.equals("Открыть")) dateLaden();
 
-                if(label.equals("Сохранить")) ;
+                if (label.equals("Сохранить")) ;
 
-                if(label.equals("Печать")) printFile();
+                if (label.equals("Печать")) printFile();
 
-                if(label.equals("Закрыть")) System.exit(0);
+                if (label.equals("Закрыть")) System.exit(0);
 
-                if(label.equals("Найти")) stringSearch();
+                if (label.equals("Найти")) stringSearch();
             }
         }
-
-        // Выбор типа шрифта
-        fonts.addItem(Font.SERIF);
-        fonts.addItem(Font.SANS_SERIF);
-        fonts.addItem(Font.MONOSPACED);
 
         // Выбор начертания шрифта
         styles.addItem("обычный");
@@ -111,7 +110,7 @@ public class Main extends JFrame {
         // Команды для буфера обмена. Создание Action-таблицы
         Hashtable<String, Action> tab = new Hashtable<String, Action>();
         Action[] actionArr = textArea.getActions();
-        for(int i = 0; i < actionArr.length; i++) {
+        for (int i = 0; i < actionArr.length; i++) {
             Action a = actionArr[i];
             tab.put((String) a.getValue(Action.NAME), a);
         }
