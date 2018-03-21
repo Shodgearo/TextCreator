@@ -2,6 +2,8 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.*;
@@ -33,9 +35,19 @@ public class Main extends JFrame {
 
         // Приёмник событий от списков
         class MainItemAdapter implements ItemListener {
+
             @Override
             public void itemStateChanged(ItemEvent e) {
                 fontRefresh();
+            }
+        }
+
+        // Приёмник событий от меню
+        class MainActionListener implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         }
 
@@ -80,8 +92,14 @@ public class Main extends JFrame {
         // Собственный метод для текстового редактора
         fontRefresh();
 
-        // Загрузка текстового файла. Метод редактора
-//        dateLaden();
+        // Прослушиватель событий
+        MainActionListener actionListener = new MainActionListener();
+
+        // Меню
+        JMenu menu1 = new JMenu("Файл");
+        JMenuItem item1_1 = new JMenuItem("Открыть");
+        menu1.add(item1_1);
+        item1_1.addActionListener(actionListener);
 
         add(textPane);
 
