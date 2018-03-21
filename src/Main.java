@@ -47,7 +47,19 @@ public class Main extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                String label;
 
+                label = e.getActionCommand();
+
+                if(label.equals("Открыть")) dateLaden();
+
+                if(label.equals("Сохранить")) ;
+
+                if(label.equals("Печать")) printFile();
+
+                if(label.equals("Закрыть")) System.exit(0);
+
+                if(label.equals("Найти")) stringSearch();
             }
         }
 
@@ -104,6 +116,11 @@ public class Main extends JFrame {
         add(textPane);
 
         initFrame();
+    }
+
+    private void printFile() {
+        // Метод врятли будет реализован так что я просто оставлю здесь сообщение
+        JOptionPane.showMessageDialog(null, "Функция находится на стадии разработки.", "Information", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void dateLaden() {
