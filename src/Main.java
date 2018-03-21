@@ -108,10 +108,23 @@ public class Main extends JFrame {
         MainActionListener actionListener = new MainActionListener();
 
         // Меню
+        JMenuBar menu = new JMenuBar();
+        setJMenuBar(menu);
+
         JMenu menu1 = new JMenu("Файл");
         JMenuItem item1_1 = new JMenuItem("Открыть");
         menu1.add(item1_1);
         item1_1.addActionListener(actionListener);
+        menu.add(menu1);
+
+        JMenu menu2 = new JMenu("Правка");
+        JMenuItem item2_1 = new JMenuItem("Выделить");
+        JMenuItem item2_2 = new JMenuItem("Копировать");
+        JMenuItem item2_3 = new JMenuItem("Вставить");
+        menu2.add(item2_1);
+        menu2.add(item2_2);
+        menu2.add(item2_3);
+        menu.add(menu2);
 
         add(textPane);
 
