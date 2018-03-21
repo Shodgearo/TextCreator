@@ -1,10 +1,16 @@
 // This program create and edit text files
 
 import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.print.PrinterException;
 import java.io.*;
+import java.text.MessageFormat;
+import java.util.Hashtable;
 
 public class Main extends JFrame {
     private final int ROWS = 100;
@@ -33,9 +39,31 @@ public class Main extends JFrame {
 
         // Приёмник событий от списков
         class MainItemAdapter implements ItemListener {
+
             @Override
             public void itemStateChanged(ItemEvent e) {
                 fontRefresh();
+            }
+        }
+
+        // Приёмник событий от меню
+        class MainActionListener implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String label;
+
+                label = e.getActionCommand();
+
+                if(label.equals("Открыть")) dateLaden();
+
+                if(label.equals("Сохранить")) ;
+
+                if(label.equals("Печать")) printFile();
+
+                if(label.equals("Закрыть")) System.exit(0);
+
+                if(label.equals("Найти")) stringSearch();
             }
         }
 
@@ -80,12 +108,65 @@ public class Main extends JFrame {
         // Собственный метод для текстового редактора
         fontRefresh();
 
-        // Загрузка текстового файла. Метод редактора
-//        dateLaden();
+        // Команды для буфера обмена. Создание Action-таблицы
+        Hashtable<String, Action> tab = new Hashtable<String, Action>();
+        Action[] actionArr = textArea.getActions();
+        for(int i = 0; i < actionArr.length; i++) {
+            Action a = actionArr[i];
+            tab.put((String) a.getValue(Action.NAME), a);
+        }
+
+        // Прослушиватель событий меню
+        MainActionListener actionListener = new MainActionListener();
+
+        // Меню
+        JMenuBar menu = new JMenuBar();
+        setJMenuBar(menu);
+
+        JMenu menu1 = new JMenu("Файл");
+        JMenuItem item1_1 = new JMenuItem("Открыть");
+        JMenuItem item1_2 = new JMenuItem("Сохранить");
+        JMenuItem item1_3 = new JMenuItem("Найти");
+        JMenuItem item1_4 = new JMenuItem("Печать");
+        JMenuItem item1_5 = new JMenuItem("Закрыть");
+        menu1.add(item1_1);
+        menu1.add(item1_2);
+        menu1.add(item1_3);
+        menu1.add(item1_4);
+        menu1.add(item1_5);
+        item1_1.addActionListener(actionListener);
+        item1_2.addActionListener(actionListener);
+        item1_3.addActionListener(actionListener);
+        item1_4.addActionListener(actionListener);
+        item1_5.addActionListener(actionListener);
+        menu.add(menu1);
+
+        JMenu menu2 = new JMenu("Правка");
+        JMenuItem item2_1 = new JMenuItem("Вырезать");
+        JMenuItem item2_2 = new JMenuItem("Копировать");
+        JMenuItem item2_3 = new JMenuItem("Вставить");
+        menu2.add(item2_1);
+        menu2.add(item2_2);
+        menu2.add(item2_3);
+        item2_1.addActionListener(tab.get(DefaultEditorKit.cutAction));
+        item2_2.addActionListener(tab.get(DefaultEditorKit.copyAction));
+        item2_3.addActionListener(tab.get(DefaultEditorKit.pasteAction));
+        menu.add(menu2);
 
         add(textPane);
 
         initFrame();
+    }
+
+    // Печать текста
+    private void printFile() {
+        if(dataName == null) dataName = "Без имени";
+
+        try {
+            textArea.print(new MessageFormat(dataName), new MessageFormat("Страница {0}"), true, null, null, false);
+        } catch (PrinterException e) {
+            System.err.println(" Печать невозможна. \n");
+        }
     }
 
     private void dateLaden() {
